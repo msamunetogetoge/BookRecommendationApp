@@ -1,0 +1,2 @@
+# BookRecommendationApp
+本を分野などで検索したり、おススメを推薦してくれるアプリ
