@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class User(models.Model):
+class M_User(models.Model):
     id = models.TextField(primary_key=True)
     name = models.TextField()
     password = models.TextField()
