@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{% endblock %}
+
+{% block landing_page_title %}
+検索ページ
+{% endblock %}
+
+{% block contents %}
+<div class="container content">
+    <!-- 検索フォーム -->
+    <div class="card card-container mb-6">
+        <h5 class="card-header">検索</h5>
+        <div class="card-body">
+            <form action="{% url 'search'%}" method="post" class="text-center form-signin">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="author" class="col-sm-2 col-form-label">著者</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="author" value="">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="title" class="col-sm-2 col-form-label">タイトル</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="title" placeholder="">
+                    </div>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">検索</button>
+        </div>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <h2>検索結果</h2>
+</div>
+{% endblock %}
