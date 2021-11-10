@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from Login.models import M_User
 
@@ -8,18 +8,29 @@ def index(request):
         id = request.POST["id"]
         password = request.POST["password"]
         if canlogin(id, password):
-            return render(request, "index.html", {"msg" :"login許可！"})
+            return redirect('/book/', permanent=True)
         else:
-            return render(request, "index.html", {"msg" :"login不可！"})
+            return render(request, "index.html", {"msg" :"IDかPASSWORDが間違っています"})
     else:
         return render(request, "index.html")
 
+def signup(request):
+    if request.method=="POST":
+        id = request.POST["id"]
+        password = request.POST["password"]
+        name = request.POST["name"]
+        email = request.POST["email"]
+        user = M_User(id = id, password = password, email = email, name = name)
+        if M_User.objects.filter(id=id).exists():
+            msg="既に存在しているidです。"
+            res ={"msg":msg}
+            return render(request, "signup.html", res)
+        else:
+            user.save()
+            return redirect('/book/', permanent=True)
+            
+
+    return render(request, "signup.html")
+
 def canlogin(id:str, password:str) -> bool:
-    try:
-        user = M_User.objects.get(id=id, password=password)
-        print(f"hello {user.name}")
-        return True
-    except M_User.DoesNotExist:
-        return False
-    except Exception:
-        return False
+        return M_User.objects.filter(id=id, password=password).exists()

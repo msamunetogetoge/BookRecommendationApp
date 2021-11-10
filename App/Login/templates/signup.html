@@ -11,12 +11,8 @@
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
     <style>
-        .err_msg {
-            color: red;
-        }
-
         .card-container.card {
-            max-width: 350px;
+            max-width: 700px;
             padding: 40px 40px;
         }
 
@@ -86,20 +82,51 @@
 
     <div class="container">
         <div class="card card-container mb-6">
-            <h5 class="card-header">Book Recommender</h5>
+            <h5 class="card-header">情報登録</h5>
             <div class="card-body">
-                <form action="{% url 'index'%}" method="post" class="text-center form-signin">
+                <form action="{% url 'signup'%}" method="post" class="text-center form-signin form-group">
                     {% csrf_token %}
-                    <p class="card-text"><input class="form-control" placeholder="ID" required autofocus name="id"></p>
-                    <p class="card-text"><input class="form-control" type="password" placeholder="PASSWORD" required
-                            name="password"></p>
-                    <p class="card-text"><a href="#">パスワードをお忘れの場合</a></p>
-                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Login</button>
-                    <p class="err_msg">{{msg}}</p>
+                    <div class="card-text row mb-3">
+                        <label class="col-sm-3 col-form-label " for="name_textbox">Name</label>
+                        <div class="col-sm-9">
+                            <input id="name_textbox" class="form-control" required autofocus name="name">
+                        </div>
+                    </div>
+                    <div class="card-text row mb-3">
+                        <label class="col-sm-3 col-form-label" for="id_textbox">ID</label>
+                        <div class="col-sm-9">
+                            <input id="id_textbox" class="form-control" required autofocus name="id">
+                        </div>
+                    </div>
+                    <div class="card-text row mb-3">
+                        <label class="col-sm-3 col-form-label " for="name_textbox">Email</label>
+                        <div class="col-sm-9">
+                            <input id="name_textbox" class="form-control" type="email" autofocus name="email">
+                        </div>
+                    </div>
+                    <div class="card-text row mb-3">
+                        <label class="col-sm-3 col-form-label" for="pass_textbox">Password</label>
+                        <div class="col-sm-9">
+                            <input id="pass_textbox" class="form-control" type="password" required autofocus
+                                name="password">
+                        </div>
+                    </div>
+                    <div class="card-text row mb-3">
+                        <label class="col-sm-3 col-form-label" for="pass_textbox">Password Again</label>
+                        <div class="col-sm-9">
+                            <input id="pass_textbox" class="form-control" type="password" required autofocus
+                                name="password">
+                        </div>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">SignUp</button>
+                    <div class="err_msg">
+                        {{msg}}
+                    </div>
             </div>
             </form>
         </div>
     </div>
+
 
     <!-- js plugin -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
