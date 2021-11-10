@@ -84,7 +84,7 @@
         <div class="card card-container mb-6">
             <h5 class="card-header">情報登録</h5>
             <div class="card-body">
-                <form action="{% url 'signup'%}" method="post" class="text-center form-signin form-group">
+                <form action="{% url 'Login:signup'%}" method="post" class="text-center form-signin form-group">
                     {% csrf_token %}
                     <div class="card-text row mb-3">
                         <label class="col-sm-3 col-form-label " for="name_textbox">Name</label>
