@@ -34,35 +34,43 @@
     </div>
 </div>
 
+<!-- 検索結果 -->
 <div class="container">
     <h2>検索結果</h2>
     <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for data in datas %}
         <div class="col">
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="{{data.imageLinks.thumbnail}}" alt="thumbnail">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">{{data.title}}</h5>
+            <form action="{% url 'Books:detail'%}" method="post">
+                {% csrf_token %}
+                <input type="hidden" value="{{data.title}}" name="title">
+                <input type="hidden" value="{{data.imageLinks}}" name="imageLinks">
+                <input type="hidden" value="{{data.description}}" name="description">
+                <input type="hidden" value="{{data.authors}}" name="authors">
+                <input type="hidden" value="{{data.publishedDate}}" name="publishedDate">
+                <input type="hidden" value="{{data.pageCount}}" name="pageCount">
 
-                            <p class="card-text">{{data.description}}</p>
-                            <p class="card-text">
-                                {% for author in data.authors %}
-                                {{author}}
-                                {% endfor %}
-                                著
-                            </p>
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <button type="submit">
+                                <img src="{{data.imageLinks.thumbnail}}" alt="thumbnail">
+                            </button>
                         </div>
-
-                    </div>
-                    <div class="card-footer text-muted">
-                        {{data.publishedDate}}出版,{{data.pageCount}}ページ
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{data.title}}</h5>
+                                <p class="card-text">
+                                    {% for author in data.authors %}
+                                    {{author}}
+                                    {% endfor %}
+                                    著
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
+
         </div>
 
         {% endfor %}
