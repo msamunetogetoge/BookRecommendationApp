@@ -16,8 +16,8 @@ class GoogleBooksStrs:
     identifier = "identifier"
     imageLinks = "imageLinks"
     description = 'description'
+    thumbnail = "thumbnail"
     result_keys = [title, authors, publisheddate, pagecount, industryIdentifiers, imageLinks, description]
-    #imagelink, thumbnail も追加する
     
 
 def search_from_params(auth:str="", title:str="")->list[dict]:
@@ -66,6 +66,7 @@ def create_query_string(title="", auth="")->str:
         url+= q1 + "+" + q2
     print(url)
     return url
+
 def get_result_list(response:dict)-> list[dict]:
     if response['totalItems'] == 0:
         return list({})
@@ -73,7 +74,6 @@ def get_result_list(response:dict)-> list[dict]:
     items = response["items"]
     for item in items:
         item_volume = item[GoogleBooksStrs.volumeinfo]
-        print(item_volume)
         dic = {}
         for k in GoogleBooksStrs.result_keys:
             if k in item_volume.keys():

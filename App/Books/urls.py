@@ -5,4 +5,5 @@ from Books import views
 app_name = "Books"
 urlpatterns = [
     path('', views.book_search, name='book_search'),
+    path('datail', views.detail, name='detail')
 ]
