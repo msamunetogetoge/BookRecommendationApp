@@ -1,11 +1,14 @@
-import json
-from django.shortcuts import redirect, render
+from django.shortcuts import render
+from Login.models import M_User
 from utils.api_search import search_from_params
 from utils.api_search import GoogleBooksStrs
+
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 
 def book_search(request):
+    print(f"user={request.user}")
     if request.method=="POST":
         datas = search_from_params(auth=request.POST["auth"], title=request.POST["title"])
         result ={"datas":datas,"params": GoogleBooksStrs}
@@ -40,3 +43,7 @@ def detail(request):
         return render(request, "detail.html", data)
     else:
         return render(request, "book_search.html")
+
+
+
+       

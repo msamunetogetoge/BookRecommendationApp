@@ -1,15 +1,13 @@
 from django.db import  models
+from django.contrib.auth.models import AbstractUser
 from django import utils
-import datetime
-
-from django.db.models import base
 
 # Create your models here.
-class M_User(models.Model):
+class M_User(AbstractUser):
     """
     アカウント情報を保持するモデル
     """
-    id = models.TextField(primary_key=True)
+    username=models.TextField(primary_key=True)
     name = models.TextField(null=False, blank=False)
     password = models.TextField(null=False, blank=False)
     email= models.EmailField(null=False, blank=True)

@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<style>
+    .pre_clear {
+        background-color: skyblue;
+    }
+
+    .card-container.card {
+        max-width: 700px;
+        padding: 40px 40px;
+    }
+
+    .card {
+        background-color: #F7F7F7;
+        /* just in case there no content*/
+        padding: 20px 25px 30px;
+        margin: 0 auto 25px;
+        margin-top: 50px;
+        /* shadows and rounded borders */
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block page_title %}
+<h2>{{name}}さんのお気に入り管理</h2>
+{% endblock %}
+
+{% block contents %}
+<!-- 作家表示 -->
+<div class="container">
+    {{msg}}
+    <div class="card card-container mb-6">
+        <h5 class="card-header">お気に入りの作家</h5>
+        <div class="card-body">
+            <ul class="list-group">
+                <div id="auth_list">
+                    {% for a in auth %}
+                    <form method="post" action="{% url 'Login:delete_attr' %}">
+                        {%csrf_token%}
+                        <li class="list-group-item d-flex justify-content-between align-items-center ">
+                            {{a}}
+                            <a href="#" class="clear_button">
+                                <input type="hidden" value="{{a}}" name="string">
+                                <input type="hidden" value="0" name="code">
+                                <span class="material-icons">clear</span>
+                            </a>
+                        </li>
+                    </form>
+
+                    {% endfor %}
+                </div>
+                <a data-bs-toggle="collapse" href="#collapseAuth" role="button" aria-expanded="false"
+                    aria-controls="collapseAuth">
+                    <span class="material-icons">
+                        add
+                    </span>
+                </a>
+                <div class="collapse" id="collapseAuth">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="作家名" aria-label="Author Name"
+                            aria-describedby="auth_add" id="auth_add_text">
+                        <button class="btn btn-outline-primary" type="button" id="auth_add">追加</button>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ジャンル表示 -->
+<div class=" container" style="display: none;">
+    <div class="card card-container mb-6">
+        <h5 class="card-header">お気に入りのジャンル</h5>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for ge in genre %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">{{ge}}
+                    <a href="#">
+                        <span class="material-icons">clear</span>
+                    </a>
+                </li>
+                {% endfor %}
+                <a data-bs-toggle="collapse" href="#collapseGenre" role="button" aria-expanded="false"
+                    aria-controls="collapseGenre">
+                    <span class="material-icons">
+                        add
+                    </span>
+                </a>
+                <div class="collapse" id="collapseGenre">
+                    ラジオボタンと、追加ボタンみたいにする？
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="ジャンルはselect要素" aria-label="Genre Name"
+                            aria-describedby="genre_add">
+                        <button class="btn btn-outline-primary" type="button" id="genre_add">追加</button>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+    $("#auth_add").click(
+        function () {
+            if ($("#auth_add_text").val() != "") {
+                var auth = $("#auth_add_text").val();
+                $.ajax({
+                    url: "{% url 'Login:register_attr' %}",
+                    method: "POST",
+                    data: {
+                        code: "0",
+                        string: auth,
+                    },
+                    timeout: 5000
+                })
+                    .done(function (data) {
+                        $("#auth_list").append('<form method="post" action=' + '{% url "Login:delete_attr" %}' + '>{%csrf_token%}<li class="list-group-item d-flex justify-content-between align-items-center ">' + auth + '<a href="#" class="clear_button"><input type="hidden" value="{{a}}" name="string"><input type="hidden" value="0" name="code"><span class="material-icons">clear</span></a></li></form>');
+                    })
+                    .fail(function () {
+                        alert("お気に入り登録に失敗しました。同じ名前の作家は登録できません。");
+                    })
+                    .always(function () {
+                        $("#auth_add_text").val('');
+                    });
+            }
+        });
+
+    // ×押す->liの背景色と×の色変える->続けてクリックする->post で削除
+    $(".clear_button").click(function () {
+        if ($(this).parent().hasClass("pre_clear")) {
+            // ajax でpost送信して削除
+            $(this).parent().parent().submit();
+        } else {
+            // li要素にpre_claerクラスを付与
+            $(this).parent().addClass("pre_clear");
+        }
+    });
+    $("li").mouseleave(function () {
+        if ($(this).hasClass("pre_clear")) {
+            $(this).removeClass("pre_clear");
+        }
+    });
+</script>
+{% endblock %}
