@@ -6,5 +6,7 @@ app_name = "Books"
 urlpatterns = [
     path('', views.book_search, name='book_search'),
     path('datail', views.detail, name='detail'),
+    path('thoughts/<str:title>/<str:authors>/<path:thumbnail>', views.thoughts, name='thoughts'),
+    path('thoughts/', views.thoughts, name='thoughts'),
     
 ]

@@ -3,8 +3,9 @@ from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import  HttpResponseBadRequest
-
+from Books.models import T_Record
 from Login.models import M_User, T_Attr
+from utils.make_display_data import make_user_config_data
 
 # Create your views here.
 def index(request):
@@ -102,19 +103,3 @@ def delete_attr(request):
         data = make_user_config_data(username)
         return render(request, "config.html", data)
 
-def make_user_config_data(username:str) -> dict:
-    """
-    username からT_Attrを検索する
-
-    Args:
-        username (str): M_User.username
-
-    Returns:
-        dict: {"name": name, "auth": auth:list, "genre": genre:list} の形の辞書
-    """
-    user = M_User.objects.get(username = username)
-    name = user.name
-    auth = list(T_Attr.objects.filter(id=user.username, code=0).order_by("string").values_list('string', flat=True))
-    genre = list(T_Attr.objects.filter(id=user.username, code=1).order_by("string").values_list('string', flat=True))
-    data ={"name": name, "auth": auth, "genre": genre}
-    return data
