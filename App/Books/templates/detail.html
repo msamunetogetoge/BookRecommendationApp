@@ -2,6 +2,14 @@
 
 {% block styles %}
 <style>
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+        text-decoration: none;
+        color: black;
+    }
+
     .material-icons.md-dark {
         color: rgba(0, 0, 0, 1);
     }
@@ -94,9 +102,23 @@
                         著
                     </p>
                     <p>
+                    <form method="post" action="{% url 'Books:thoughts' %}">
+                        {%csrf_token%}
+                        <input type="hidden" value="{{data.title}}" name="title">
+                        <input type="hidden" value="False" name="readflag">
+                        <button type="submit" class="btn btn-normal">
+                            <span class="material-icons">
+                                star
+                            </span>読みたい本に登録
+                        </button>
+                    </form>
+                    </p>
+                    <p>
                         <a
                             href="{%  url 'Books:thoughts' title=data.title authors=data.authors thumbnail=data.imageLinks.thumbnail %}">
-                            感想登録
+                            <span class="material-icons">
+                                add_comment
+                            </span>感想登録
                         </a>
                     </p>
                 </div>
@@ -147,6 +169,9 @@
 {% endblock %}
 {% block scripts %}
 <script>
+    // 読みたい本に登録する
+
+    // 検索結果をスライド表示する
     $('.multiple-items').slick({
         dots: true,
         infinite: true,
