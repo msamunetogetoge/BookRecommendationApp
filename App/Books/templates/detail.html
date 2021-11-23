@@ -114,12 +114,11 @@
                     </form>
                     </p>
                     <p>
-                        <a
-                            href="{%  url 'Books:thoughts' title=data.title authors=data.authors thumbnail=data.imageLinks.thumbnail %}">
-                            <span class="material-icons">
+                        <button type="btn" class="btn btn-normal" data-bs-toggle="modal"
+                            data-bs-target="#not_read_modal" style="white-space: nowrap;"
+                            data-title="{{data.title}}"><span class="material-icons">
                                 add_comment
-                            </span>感想登録
-                        </a>
+                            </span>感想登録</button>
                     </p>
                 </div>
             </div>
@@ -167,10 +166,29 @@
 </div>
 
 {% endblock %}
+{% block modal %}
+{% endblock %}
 {% block scripts %}
 <script>
-    // 読みたい本に登録する
-
+    // 感想登録modalにデータを渡す
+    $("#not_read_modal").on('show.bs.modal', function (event) {
+        //モーダルを開いたボタンを取得
+        var button = $(event.relatedTarget);
+        // データ渡す
+        $("#title_textbox").val(button.data("title"));
+        $("#readdate_textbox").val(create_today());
+        $("#thoughts_textbox").val("");
+    });
+    // 今日の日付データを作成する
+    function create_today() {
+        var today = new Date();
+        today.setDate(today.getDate());
+        var yyyy = today.getFullYear();
+        var mm = ("0" + (today.getMonth() + 1)).slice(-2);
+        var dd = ("0" + today.getDate()).slice(-2);
+        var now = yyyy + '-' + mm + '-' + dd;
+        return now;
+    }
     // 検索結果をスライド表示する
     $('.multiple-items').slick({
         dots: true,

@@ -180,49 +180,10 @@
     </div>
 </div>
 
-<!--既読にするmodal -->
-<div class="modal" tabindex="-1" id="not_read_modal" aria-labelledby="not_read_modal_label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="not_read_modal_label">既読本へ登録</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{% url 'Books:thoughts'%}" method="post" class="text-center">
-                {% csrf_token %}
-                <div class="modal-body">
 
-                    <div class="card-text row mb-3">
-                        <label class="col-sm-3 col-form-label " for="title_textbox">タイトル</label>
-                        <div class="col-sm-9">
-                            <input id="title_textbox" class="form-control" required autofocus name="title">
-                        </div>
-                    </div>
-                    <div class="card-text row mb-3">
-                        <label class="col-sm-3 col-form-label " for="readdate_textbox">読書日</label>
-                        <div class="col-sm-9">
-                            <input type="date" id="readdate_textbox" name="readdate" required class="form-control">
-                        </div>
-                    </div>
-                    <div class="card-text row mb-3">
-                        <label class="col-sm-3 col-form-label" for="thoughts_textbox">感想</label>
-                        <div class="col-sm-9">
-                            <input id="thoughts_textbox" class="form-control" required autofocus name="thoughts">
-                        </div>
-                    </div>
-                    <!-- <button class="btn btn-primary btn-block" type="submit">登録</button> -->
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <button type="submit" class="btn btn-primary">登録</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 {% endblock %}
-
+{% block modal %}
+{% endblock %}
 {% block scripts %}
 <script>
     // ajax使う為の設定

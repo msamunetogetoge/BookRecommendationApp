@@ -62,15 +62,11 @@ def thoughts(request, title="", authors="", thumbnail=""):
     感想登録ページ
     """
     if request.method == "POST":
-        username = request.user
+        username = str(request.user)
         title = request.POST.get("title","")
-        # readdate = request.POST.get("readdate", datetime.datetime.strftime(utils.timezone.now(), "%Y/%m/%d"))
         readdate = request.POST.get("readdate", utils.timezone.now())
         thoughts = request.POST.get("thoughts","")
         readflag = eval(request.POST.get("readflag","True"))
-        print(readflag)
-
-        # record = T_Record(username=username, title= title, readdate= readdate, thoughts = thoughts, readflag=readflag)
         try:
             record, is_created = T_Record.objects.get_or_create(username=username, title= title)
             record.readdate = readdate
@@ -82,11 +78,11 @@ def thoughts(request, title="", authors="", thumbnail=""):
         except Exception as e:
             print(e)
             data = {"title": title, "msg":"保存に失敗しました"}
-            return render(request, "thoughts.html", data)
+            return render(request, "config.html",data)
         
     else:
         data = {"title":title, "authors":authors, "thumbnail":thumbnail}
-        return render(request, "thoughts.html", data)
+        return render(request, "detail.html", data)
 
 def readend(request):
     username = request.user
