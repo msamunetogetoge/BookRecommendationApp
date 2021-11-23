@@ -73,6 +73,48 @@
         </div>
     </div>
 </div>
+
+<!-- 読みたい本表示 -->
+<div class="container">
+    <div class="card card-container mb-6">
+        <h5 class="card-header">読みたい本</h5>
+        <div class="card-body">
+            <ul class="list-group">
+                <div id="not_read_list">
+                    {% for r_data in not_readdata %}
+                    <!-- <li class="list-group-item d-flex justify-content-between align-items-center "> -->
+                    <li class="list-group-item d-flex justify-content-between align-items-center ">
+
+                        <div class="title_div">
+                            {{r_data.title}}
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="btn" class="btn btn-normal" data-bs-toggle="modal"
+                                        data-bs-target="#not_read_modal" style="white-space: nowrap;"
+                                        data-title="{{r_data.title}}">既読にする</button>
+                                </div>
+                                <div class="col">
+                                    <form method="post" action="{% url 'Books:delete_not_read' %}">
+                                        {%csrf_token%}
+                                        <a href="#" class="clear_button">
+                                            <input type="hidden" value="{{r_data.title}}" name="title">
+                                            <span class="material-icons">clear</span>
+                                        </a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    {% endfor %}
+                </div>
+            </ul>
+
+        </div>
+    </div>
+</div>
 <!-- 読んだ本表示 -->
 <div class="container">
     <div class="card card-container mb-6">
@@ -137,10 +179,53 @@
         </div>
     </div>
 </div>
+
+<!--既読にするmodal -->
+<div class="modal" tabindex="-1" id="not_read_modal" aria-labelledby="not_read_modal_label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="not_read_modal_label">既読本へ登録</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'Books:thoughts'%}" method="post" class="text-center">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    <div class="card-text row mb-3">
+                        <label class="col-sm-3 col-form-label " for="title_textbox">タイトル</label>
+                        <div class="col-sm-9">
+                            <input id="title_textbox" class="form-control" required autofocus name="title">
+                        </div>
+                    </div>
+                    <div class="card-text row mb-3">
+                        <label class="col-sm-3 col-form-label " for="readdate_textbox">読書日</label>
+                        <div class="col-sm-9">
+                            <input type="date" id="readdate_textbox" name="readdate" required class="form-control">
+                        </div>
+                    </div>
+                    <div class="card-text row mb-3">
+                        <label class="col-sm-3 col-form-label" for="thoughts_textbox">感想</label>
+                        <div class="col-sm-9">
+                            <input id="thoughts_textbox" class="form-control" required autofocus name="thoughts">
+                        </div>
+                    </div>
+                    <!-- <button class="btn btn-primary btn-block" type="submit">登録</button> -->
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">登録</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
+    // ajax使う為の設定
     function getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -168,6 +253,21 @@
             }
         }
     });
+
+    // not_read_modalが開く時にデータを渡す
+    $("#not_read_modal").on('show.bs.modal', function (event) {
+        //モーダルを開いたボタンを取得
+        var button = $(event.relatedTarget);
+        // データ渡す
+        $("#title_textbox").val(button.data("title"));
+        $("#readdate_textbox").val(create_today());
+        $("#thoughts_textbox").val("");
+    });
+    // 読みたい本を既読にする
+    function submit_readend() {
+        $("#readend").submit();
+    }
+    // お気に入り作家を登録する
     $("#auth_add").click(
         function () {
             if ($("#auth_add_text").val() != "") {
@@ -193,16 +293,29 @@
             }
         });
 
-    // ×押す->liの背景色と×の色変える->続けてクリックする->post で削除
+    // 既読にする押す-> 初期値ありmodalに渡す今日のデータ作成
+    function create_today() {
+        var today = new Date();
+        today.setDate(today.getDate());
+        var yyyy = today.getFullYear();
+        var mm = ("0" + (today.getMonth() + 1)).slice(-2);
+        var dd = ("0" + today.getDate()).slice(-2);
+        var now = yyyy + '-' + mm + '-' + dd;
+        return now;
+    }
+
+
+    // ×押す->削除可能状態->削除
     $(".clear_button").click(function () {
-        if ($(this).parent().hasClass("pre_clear")) {
+        if ($(this).parents('li').hasClass("pre_clear")) {
             // ajax でpost送信して削除
-            $(this).parent().parent().submit();
+            $(this).parents("form").submit();
         } else {
             // li要素にpre_claerクラスを付与
-            $(this).parent().addClass("pre_clear");
+            $(this).parents('li').addClass("pre_clear");
         }
     });
+    // マウスが離れたら削除不可状態に戻す
     $("li").mouseleave(function () {
         if ($(this).hasClass("pre_clear")) {
             $(this).removeClass("pre_clear");
