@@ -247,6 +247,7 @@
         $("#title_textbox").val(button.data("title"));
         $("#readdate_textbox").val(create_today());
         $("#thoughts_textbox").val(button.data("thoughts"));
+        $("#title_textbox").attr('readonly', true);
     });
 
     // 既読本をクリックした時に、モーダルを開く
