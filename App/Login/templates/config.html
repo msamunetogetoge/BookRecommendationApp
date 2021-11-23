@@ -82,9 +82,7 @@
             <ul class="list-group">
                 <div id="not_read_list">
                     {% for r_data in not_readdata %}
-                    <!-- <li class="list-group-item d-flex justify-content-between align-items-center "> -->
                     <li class="list-group-item d-flex justify-content-between align-items-center ">
-
                         <div class="title_div">
                             {{r_data.title}}
                         </div>
@@ -120,7 +118,33 @@
     <div class="card card-container mb-6">
         <h5 class="card-header">既読本</h5>
         <div class="card-body">
-            <ul class="list-group list-group-horizontal">
+            <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center ">
+                <div>
+                    タイトル
+                </div>
+                <div>
+                    読書完了日
+                </div>
+            </li>
+            {% for r_data in readdata %}
+            <div>
+                <li
+                    class="list-group-item d-flex justify-content-between align-items-center list-group-item-action readdata">
+                    <div id="title">
+                        {{r_data.title}}
+                    </div>
+                    <div id="readdate">
+                        {{r_data.readdate}}
+                    </div>
+
+                </li>
+                <button type="btn" class="btn btn-normal" data-bs-toggle="modal" data-bs-target="#not_read_modal"
+                    data-title="{{r_data.title}}" data-readdate="{{r_data.readdate}}"
+                    data-thoughts="{{r_data.thoughts}}" id="readdata_update" style="display: none;"></button>
+            </div>
+            {% endfor %}
+
+            <!-- <ul class="list-group list-group-horizontal">
                 <li class="list-group-item list-group-item-info">
                     タイトル
                 </li>
@@ -143,7 +167,7 @@
                     {{r_data.thoughts}}
                 </li>
             </ul>
-            {% endfor %}
+            {% endfor %} -->
 
         </div>
     </div>
@@ -222,12 +246,16 @@
         // データ渡す
         $("#title_textbox").val(button.data("title"));
         $("#readdate_textbox").val(create_today());
-        $("#thoughts_textbox").val("");
+        $("#thoughts_textbox").val(button.data("thoughts"));
     });
-    // 読みたい本を既読にする
-    function submit_readend() {
-        $("#readend").submit();
-    }
+
+    // 既読本をクリックした時に、モーダルを開く
+    $(".readdata").click(function (event) {
+        // console.log($(this).find("#readdata_update"));
+        var button = $(this).parent().find("#readdata_update");
+        button.click();
+    });
+
     // お気に入り作家を登録する
     $("#auth_add").click(
         function () {
@@ -254,7 +282,7 @@
             }
         });
 
-    // 既読にする押す-> 初期値ありmodalに渡す今日のデータ作成
+    // input type=date に渡せる今日のデータ作成
     function create_today() {
         var today = new Date();
         today.setDate(today.getDate());
