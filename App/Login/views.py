@@ -7,7 +7,15 @@ from Books.models import T_Record
 from Login.models import M_User, T_Attr
 from utils.make_display_data import make_user_config_data
 
+import secrets
+
 # Create your views here.
+
+class SecrectCode:
+    def __init__(self):
+        self.secret_code=""
+secretCode = SecrectCode()
+
 def index(request):
     if request.method=="POST":
         id = request.POST["id"]
@@ -22,16 +30,59 @@ def index(request):
         return render(request, "index.html")
 
 def logout_user(request):
+    """
+    ログアウトします
+    """
     msg={"msg":""}
     try:
         logout(request)
+        return redirect('/book/', permanent=True)
     except:
         msg = {"msg" :"ログアウトに失敗しました"}
-        # msg = {"msg" :e}
-    finally:
         return render(request, "index.html", msg)
+        
+
+def change_password(request):
+    """
+    パスワード変更する
+    """
+    msg={"msg":""}
+    if request.method == "POST":
+        print(f"posted = {request.POST['secret_code']}")
+        print(f"saved = {secretCode.secret_code }")
+        if request.POST["secret_code"] != "" and request.POST["secret_code"] == secretCode.secret_code :
+            # password 変更処理
+            username = request.POST["username"]
+            u = M_User.objects.get(username= username)
+            u.password = request.POST["password"]
+            u.save()
+            msg["msg"] = "パスワードを変更しました。"
+            return render(request, "index.html", msg)
+        else:
+            msg["msg"] ="パスワード変更に失敗しました。"
+            return render(request, "change_password.html", msg)
+    else:
+        return render(request, "change_password.html")
+
+def check_and_publish_code(request):
+    """
+    Ajax でリクエストが来る想定。
+    パスワード変更時、id入力 -> idがあればパスワード入力フォーム表示-> パスワード変更 という流れ。    
+    """
+    if request.method=="POST":
+        id = request.POST["id"]
+        if M_User.objects.filter(username=id).exists():
+            secretCode.secret_code = secrets.token_hex(16)
+            return JsonResponse({"secret":secretCode.secret_code })
+        else:
+            return HttpResponseBadRequest(request)
+    else:
+        return redirect('/book/', permanent=True)
 
 def signup(request):
+    """
+    新規登録画面を返します
+    """
     if request.method=="POST":
         id = request.POST["id"]
         password = request.POST["password"]

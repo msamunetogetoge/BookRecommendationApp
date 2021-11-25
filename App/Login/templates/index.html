@@ -84,7 +84,7 @@
                 <p class="card-text"><input class="form-control" placeholder="ID" required autofocus name="id"></p>
                 <p class="card-text"><input class="form-control" type="password" placeholder="PASSWORD" required
                         name="password"></p>
-                <p class="card-text"><a href="#">パスワードをお忘れの場合</a></p>
+                <p class="card-text"><a href="{% url 'Login:change_password' %}">パスワードをお忘れの場合</a></p>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Login</button>
                 <p class="err_msg">{{msg}}</p>
         </div>
