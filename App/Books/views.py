@@ -16,7 +16,6 @@ def book_search(request):
     """
     Booksのindex page
     """
-    print(f"user={request.user}")
     if request.method=="POST":
         datas = search_from_params(auth=request.POST["auth"], title=request.POST["title"])
         result ={"datas":datas,"params": GoogleBooksStrs}
@@ -52,7 +51,6 @@ def detail(request):
 
         search_result = search_from_params(auth=author)
         data ={"data":result, "search_result": search_result}
-        print(data)
         return render(request, "detail.html", data)
     else:
         return render(request, "book_search.html")

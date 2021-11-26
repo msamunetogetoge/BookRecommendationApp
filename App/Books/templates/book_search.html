@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/Login/base.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/Books/book_search.css' %}">
 {% endblock %}
 
@@ -12,7 +13,7 @@
 
 <div class="container content">
     <!-- 検索フォーム -->
-    <div class="card card-container mb-6">
+    <div class="card card-container mb-6" id="searchform">
         <h5 class="card-header">検索</h5>
         <div class="card-body">
             <form action="{% url 'Books:book_search'%}" method="post" class="text-center form-signin">
@@ -37,8 +38,8 @@
 
 <!-- 検索結果 -->
 <div class="container">
-    <h2>検索結果</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <h3>検索結果</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="searchresult">
         {% for data in datas %}
         <div class="col">
             <form action="{% url 'Books:detail'%}" method="post">
@@ -52,12 +53,12 @@
 
                 <div class="card mb-3">
                     <div class="row g-0">
-                        <div class="col-md-4">
+                        <div class="col-lg-4">
                             <button type="submit">
                                 <img src="{{data.imageLinks.thumbnail}}" alt="thumbnail">
                             </button>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-lg-8">
                             <div class="card-body">
                                 <h5 class="card-title">{{data.title}}</h5>
                                 <p class="card-text">
@@ -78,6 +79,6 @@
     </div>
 </div>
 
-{{ datas }}
-
+{% endblock %}
+{% block scripts %}
 {% endblock %}

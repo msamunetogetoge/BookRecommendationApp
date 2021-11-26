@@ -1,77 +1,108 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/Login/base.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/Login/signup.css' %}">
+{% endblock %}
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/Login/base.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/Login/signup.css' %}">
+{% block contents %}
 
-</head>
-
-<body class="landing-page sidebar-collapse">
-
-    <div class="container">
-        <div class="card card-container mb-6">
-            <h5 class="card-header">情報登録</h5>
-            <div class="card-body">
-                <form action="{% url 'Login:signup'%}" method="post" class="text-center form-signin form-group">
-                    {% csrf_token %}
-                    <div class="card-text row mb-3">
-                        <label class="col-sm-3 col-form-label " for="name_textbox">Name</label>
-                        <div class="col-sm-9">
-                            <input id="name_textbox" class="form-control" required autofocus name="name">
-                        </div>
+<div class="container">
+    <div class="card card-container mb-6">
+        <h5 class="card-header">ユーザー登録</h5>
+        <div class="card-body">
+            <form action="{% url 'Login:signup'%}" method="post" class="text-center form-signin form-group">
+                {% csrf_token %}
+                <div class="card-text row mb-3">
+                    <label class="col-sm-3 col-form-label " for="name_textbox">Name</label>
+                    <div class="col-sm-9">
+                        <input id="name_textbox" class="form-control" required autofocus name="name">
                     </div>
-                    <div class="card-text row mb-3">
-                        <label class="col-sm-3 col-form-label" for="id_textbox">ID</label>
-                        <div class="col-sm-9">
-                            <input id="id_textbox" class="form-control" required autofocus name="id">
-                        </div>
+                </div>
+                <div class="card-text row mb-3">
+                    <label class="col-sm-3 col-form-label" for="id_textbox">ID</label>
+                    <div class="col-sm-9">
+                        <input id="id_textbox" class="form-control" required autofocus name="id">
                     </div>
-                    <div class="card-text row mb-3">
-                        <label class="col-sm-3 col-form-label " for="name_textbox">Email</label>
-                        <div class="col-sm-9">
-                            <input id="name_textbox" class="form-control" type="email" autofocus name="email">
-                        </div>
+                </div>
+                <div class="card-text row mb-3">
+                    <label class="col-sm-3 col-form-label " for="name_textbox">Email</label>
+                    <div class="col-sm-9">
+                        <input id="name_textbox" class="form-control" type="email" autofocus name="email">
                     </div>
-                    <div class="card-text row mb-3">
-                        <label class="col-sm-3 col-form-label" for="pass_textbox">Password</label>
-                        <div class="col-sm-9">
-                            <input id="pass_textbox" class="form-control" type="password" required autofocus
-                                name="password">
-                        </div>
+                </div>
+                <div class="card-text row mb-3">
+                    <label class="col-sm-3 col-form-label" for="pass_textbox">Password</label>
+                    <div class="col-sm-9">
+                        <input id="pass_textbox" class="form-control" type="password" required autofocus
+                            name="password">
                     </div>
-                    <div class="card-text row mb-3">
-                        <label class="col-sm-3 col-form-label" for="pass_textbox">Password Again</label>
-                        <div class="col-sm-9">
-                            <input id="pass_textbox" class="form-control" type="password" required autofocus
-                                name="password">
-                        </div>
+                </div>
+                <div class="card-text row mb-3">
+                    <label class="col-sm-3 col-form-label" for="pass_textbox_again">Password Again</label>
+                    <div class="col-sm-9">
+                        <input id="pass_textbox_again" class="form-control" type="password" required autofocus
+                            name="password_again">
+                        <div class="valid-feedback">O.K.</div>
+                        <div class="invalid-feedback">入力されたパスワードが一致しません。</div>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">SignUp</button>
-                    <div class="err_msg">
-                        {{msg}}
-                    </div>
-                </form>
-            </div>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" id="signup_button"
+                    onclick="check_password_confirm('pass_textbox_again', 'signup_button');">SignUp</button>
+                <div class="err_msg">
+                    {{msg}}
+                </div>
+            </form>
         </div>
     </div>
+</div>
+{% endblock %}
 
+{% block scripts %}
+<script>
+    // 最初は何も入力されていないのでボタンを使用不可にする
+    check_password_confirm("pass_textbox_again", "signup_button");
+    // passwordとpassword_againが一致しているかの判定
+    var elm_pass = $('#pass_textbox');
+    var elm_confirm = $('#pass_textbox_again');
 
-    <!-- js plugin -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
-        integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"
-        integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj"
-        crossorigin="anonymous"></script>
-</body>
-
-</html>
+    // 一回目のパスワードからフォーカスが外れたら確認パスワードにフォーカスする
+    elm_pass.on('blur', function () {
+        if (elm_pass.val() != elm_confirm.val()) {
+            elm_confirm.focus();
+        }
+    });
+    //確認パスワード入力のフォーカスを失ったとき（Blur）のイベントリスナー
+    elm_confirm.on('blur', function () {
+        // ok
+        if (elm_pass.val() === "" && elm_confirm.val() === "") {
+            elm_confirm.removeClass("is-invalid");
+            elm_pass.removeClass("is-invalid");
+            elm_confirm.removeClass("is-valid");
+            elm_pass.removeClass("is-valid");
+        }
+        else if (elm_pass.val() === elm_confirm.val()) {
+            elm_confirm.removeClass("is-invalid");
+            elm_confirm.addClass("is-valid");
+        }
+        // nvalid
+        else {
+            elm_confirm.removeClass("is-valid");
+            elm_confirm.addClass("is-invalid");
+        }
+        check_password_confirm("pass_textbox_again", "signup_button");
+    });
+    // パスワードの一致が確認できるまではパスワード変更ボタンは使えなくする
+    function check_password_confirm(pass_textbox_again, password_button) {
+        if ($("#" + pass_textbox_again).val() === "") {
+            $("#" + password_button).prop("disabled", true);
+        }
+        else if ($("#" + pass_textbox_again).hasClass("is-valid")) {
+            $("#" + password_button).prop("disabled", false);
+        }
+        else {
+            $("#" + password_button).prop("disabled", true);
+        }
+    }
+</script>
+{% endblock %}

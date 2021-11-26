@@ -36,7 +36,9 @@ def logout_user(request):
     msg={"msg":""}
     try:
         logout(request)
-        return redirect('/book/', permanent=True)
+        msg={}
+        msg["msg"] = "ログアウトしました。"
+        return render(request, "index.html", msg)
     except:
         msg = {"msg" :"ログアウトに失敗しました"}
         return render(request, "index.html", msg)
@@ -48,8 +50,6 @@ def change_password(request):
     """
     msg={"msg":""}
     if request.method == "POST":
-        print(f"posted = {request.POST['secret_code']}")
-        print(f"saved = {secretCode.secret_code }")
         if request.POST["secret_code"] != "" and request.POST["secret_code"] == secretCode.secret_code :
             # password 変更処理
             username = request.POST["username"]
@@ -95,8 +95,9 @@ def signup(request):
             return render(request, "signup.html", res)
         else:
             user.save()
-            login(request, user)
-            return redirect('/book/', permanent=True)
+            msg={}
+            msg["msg"] = "ユーザー登録しました。\nログインしてください。"
+            return render(request, "index.html", msg)
 
     return render(request, "signup.html")
 

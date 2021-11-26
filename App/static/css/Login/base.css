@@ -1,3 +1,7 @@
+.nav-item {
+    padding:10px 30px 10px;
+}
+
 .err_msg {
     color: red;
 }
