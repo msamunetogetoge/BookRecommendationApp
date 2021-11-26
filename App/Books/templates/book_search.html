@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/Books/book_search.css' %}">
 {% endblock %}
 
 {% block page_title %}
@@ -8,7 +9,7 @@
 {% endblock %}
 
 {% block contents %}
-{% load static %}
+
 <div class="container content">
     <!-- 検索フォーム -->
     <div class="card card-container mb-6">
