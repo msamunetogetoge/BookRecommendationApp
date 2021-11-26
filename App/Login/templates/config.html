@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block styles %}
-<style>
+<link rel="stylesheet" type="text/css" href="{% static 'css/Login/config.css' %}">
+<!-- <style>
+    
     .pre_clear {
         background-color: skyblue;
     }
@@ -25,7 +27,7 @@
         -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
         box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     }
-</style>
+</style> -->
 {% endblock %}
 
 {% block page_title %}
@@ -212,8 +214,6 @@
 {% endblock %}
 {% block scripts %}
 <script>
-
-
     // not_read_modalが開く時にデータを渡す
     $("#not_read_modal").on('show.bs.modal', function (event) {
         //モーダルを開いたボタンを取得
