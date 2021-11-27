@@ -1,13 +1,10 @@
 from django import utils
-from django.http.response import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from Books.models import T_Record
 from Login.models import M_User
 from utils.api_search import search_from_params, GoogleBooksStrs
 from utils.make_display_data import make_user_config_data
 from utils.need_login import need_login
-
-from django.contrib.auth import authenticate, login
 
 import datetime
 
@@ -58,7 +55,7 @@ def detail(request):
     return render(request, "book_search.html")
 
 
-@need_login(redirect_field_name="index.html", err_msg="登録にはログインが必要です。")
+@need_login(redirect_field_name="index.html", err_msg="登録にはサインアップ、ログインが必要です。")
 def thoughts(request, title="", authors="", thumbnail=""):
     """[summary]
     感想登録

@@ -1,5 +1,6 @@
 from functools import wraps
 from django.shortcuts import render
+from Login.models import M_User
 
 def need_login(redirect_field_name:str, err_msg:str, view_func=None):
     """
@@ -8,12 +9,10 @@ def need_login(redirect_field_name:str, err_msg:str, view_func=None):
     Args:
         redirect_field_name (str): loginしていなかったときに、表示したいページ
         view_func (function, optional): viewe関数.
-        err_msg (str, optional): loginしていなかったときに表示したい文字列 Defaults to None.
-
-    Returns:
-        [type]: [description]
+        err_msg (str): loginしていなかったときに表示したい文字列.
     """
     def decorator(func):
+        @wraps(func)
         def wrapper(request, *args, **kwargs):
             if request.user.is_authenticated:
                 return func(request, *args, **kwargs)
