@@ -5,11 +5,15 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/Login/signup.css' %}">
 {% endblock %}
 
+{% block page_title %}
+<h2>ユーザー登録ページ</h2>
+{% endblock %}
+
 {% block contents %}
 
 <div class="container">
     <div class="card card-container mb-6">
-        <h5 class="card-header">ユーザー登録</h5>
+        <h5 class="card-header">Book Recommender</h5>
         <div class="card-body">
             <form action="{% url 'Login:signup'%}" method="post" class="text-center form-signin form-group">
                 {% csrf_token %}
