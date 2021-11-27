@@ -96,22 +96,23 @@
                     {% csrf_token %}
                     <div class="modal-body">
 
-                        <div class="card-text row mb-3">
-                            <label class="col-sm-3 col-form-label " for="title_textbox">タイトル</label>
-                            <div class="col-sm-9">
+                        <div class="card-text mb-3">
+                            <label class="form-label pull-left mb-3" for="title_textbox">タイトル</label>
+                            <div class="">
                                 <input id="title_textbox" class="form-control" required autofocus name="title">
                             </div>
                         </div>
-                        <div class="card-text row mb-3">
-                            <label class="col-sm-3 col-form-label " for="readdate_textbox">読書日</label>
-                            <div class="col-sm-9">
+                        <div class="card-text mb-3">
+                            <label class="pull-left form-label mb-3" for="readdate_textbox">読書日</label>
+                            <div class="">
                                 <input type="date" id="readdate_textbox" name="readdate" required class="form-control">
                             </div>
                         </div>
-                        <div class="card-text row mb-3">
-                            <label class="col-sm-3 col-form-label" for="thoughts_textbox">感想</label>
-                            <div class="col-sm-9">
-                                <input id="thoughts_textbox" class="form-control" required autofocus name="thoughts">
+                        <div class="card-text mb-3">
+                            <label class="pull-left form-label mb-3" for="thoughts_textbox">感想</label>
+                            <div class="">
+                                <textarea id="thoughts_textbox" class="form-control" required autofocus name="thoughts"
+                                    rows="3"> </textarea>
                             </div>
                         </div>
                         <!-- <button class="btn btn-primary btn-block" type="submit">登録</button> -->
