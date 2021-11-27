@@ -1,11 +1,11 @@
 import json
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from django.http import  HttpResponseBadRequest
-from Books.models import T_Record
 from Login.models import M_User, T_Attr
 from utils.make_display_data import make_user_config_data
+from utils.need_login import need_login
 
 import secrets
 
@@ -101,13 +101,13 @@ def signup(request):
 
     return render(request, "signup.html")
 
+@need_login(redirect_field_name='index.html', err_msg="サインアップ、ログインが必要です")
 def user_config(request):
-    if not request.user.is_authenticated:
-        msg ={"msg":"ログインしてください"}
-        return render(request, 'index.html', msg)
-    else:
-        data = make_user_config_data(username=request.user)
-        return render(request, "config.html", data)
+    """
+    config.htmlを表示する。
+    """
+    data = make_user_config_data(username=request.user)
+    return render(request, "config.html", data)
 
 # この部分はajax にする予定
 def register_attr(request):

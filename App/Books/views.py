@@ -1,12 +1,10 @@
 from django import utils
-from django.http.response import JsonResponse
 from django.shortcuts import render
 from Books.models import T_Record
 from Login.models import M_User
 from utils.api_search import search_from_params, GoogleBooksStrs
 from utils.make_display_data import make_user_config_data
-
-from django.contrib.auth import authenticate, login
+from utils.need_login import need_login
 
 import datetime
 
@@ -22,6 +20,7 @@ def book_search(request):
         return render(request, "book_search.html", result)
 
     return render(request, "book_search.html")
+
 
 def detail(request):
     """
@@ -52,12 +51,14 @@ def detail(request):
         search_result = search_from_params(auth=author)
         data ={"data":result, "search_result": search_result}
         return render(request, "detail.html", data)
-    else:
-        return render(request, "book_search.html")
+    
+    return render(request, "book_search.html")
 
+
+@need_login(redirect_field_name="index.html", err_msg="登録にはサインアップ、ログインが必要です。")
 def thoughts(request, title="", authors="", thumbnail=""):
     """[summary]
-    感想登録ページ
+    感想登録
     """
     if request.method == "POST":
         username = str(request.user)
@@ -78,11 +79,13 @@ def thoughts(request, title="", authors="", thumbnail=""):
             data = {"title": title, "msg":"保存に失敗しました"}
             return render(request, "config.html",data)
         
-    else:
-        data = {"title":title, "authors":authors, "thumbnail":thumbnail}
-        return render(request, "detail.html", data)
+    data = {"title":title, "authors":authors, "thumbnail":thumbnail}
+    return render(request, "detail.html", data)
 
 def readend(request):
+    """
+    読みたい本を既読本にする。
+    """
     username = request.user
     if request.method == "POST":
         title = request.POST.get("title","")
@@ -105,6 +108,9 @@ def readend(request):
         return render(request, "config.html",data)
 
 def delete_not_read(request):
+    """
+    読みたい本を削除する
+    """
     username = request.user
     if request.method == "POST":
         title = request.POST.get("title","")
