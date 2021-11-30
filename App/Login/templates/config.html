@@ -120,32 +120,6 @@
                     data-thoughts="{{r_data.thoughts}}" id="readdata_update" style="display: none;"></button>
             </div>
             {% endfor %}
-
-            <!-- <ul class="list-group list-group-horizontal">
-                <li class="list-group-item list-group-item-info">
-                    タイトル
-                </li>
-                <li class="list-group-item list-group-item-info">
-                    読書完了日
-                </li>
-                <li class="list-group-item list-group-item-info">
-                    感想など
-                </li>
-            </ul>
-            {% for r_data in readdata %}
-            <ul class="list-group list-group-horizontal-sm">
-                <li class="list-group-item">
-                    {{r_data.title}}
-                </li>
-                <li class="list-group-item">
-                    {{r_data.readdate}}
-                </li>
-                <li class="list-group-item">
-                    {{r_data.thoughts}}
-                </li>
-            </ul>
-            {% endfor %} -->
-
         </div>
     </div>
 </div>
@@ -188,25 +162,9 @@
 {% block ajax %}
 {% endblock %}
 {% block scripts %}
+<!-- my js file -->
+<script type="text/javascript" src="{% static 'js/Login/config.js' %}"></script>
 <script>
-    // not_read_modalが開く時にデータを渡す
-    $("#not_read_modal").on('show.bs.modal', function (event) {
-        //モーダルを開いたボタンを取得
-        var button = $(event.relatedTarget);
-        // データ渡す
-        $("#title_textbox").val(button.data("title"));
-        $("#readdate_textbox").val(create_today());
-        $("#thoughts_textbox").val(button.data("thoughts"));
-        $("#title_textbox").attr('readonly', true);
-    });
-
-    // 既読本をクリックした時に、モーダルを開く
-    $(".readdata").click(function (event) {
-        // console.log($(this).find("#readdata_update"));
-        var button = $(this).parent().find("#readdata_update");
-        button.click();
-    });
-
     // お気に入り作家を登録する
     $("#auth_add").click(
         function () {
@@ -233,33 +191,6 @@
             }
         });
 
-    // input type=date に渡せる今日のデータ作成
-    function create_today() {
-        var today = new Date();
-        today.setDate(today.getDate());
-        var yyyy = today.getFullYear();
-        var mm = ("0" + (today.getMonth() + 1)).slice(-2);
-        var dd = ("0" + today.getDate()).slice(-2);
-        var now = yyyy + '-' + mm + '-' + dd;
-        return now;
-    }
 
-
-    // ×押す->削除可能状態->削除
-    $(".clear_button").click(function () {
-        if ($(this).parents('li').hasClass("pre_clear")) {
-            // ajax でpost送信して削除
-            $(this).parents("form").submit();
-        } else {
-            // li要素にpre_claerクラスを付与
-            $(this).parents('li').addClass("pre_clear");
-        }
-    });
-    // マウスが離れたら削除不可状態に戻す
-    $("li").mouseleave(function () {
-        if ($(this).hasClass("pre_clear")) {
-            $(this).removeClass("pre_clear");
-        }
-    });
 </script>
 {% endblock %}
