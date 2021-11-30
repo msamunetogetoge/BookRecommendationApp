@@ -20,26 +20,35 @@
                 <div class="card-text row mb-3">
                     <label class="col-sm-3 col-form-label " for="name_textbox">Name</label>
                     <div class="col-sm-9">
-                        <input id="name_textbox" class="form-control" required autofocus name="name">
+                        <input id="name_textbox" class="form-control name_textbox" required autofocus name="name">
+                        <div class="valid-feedback">O.K.</div>
+                        <div class="invalid-feedback">Nameは64文字以内です。</div>
                     </div>
                 </div>
                 <div class="card-text row mb-3">
                     <label class="col-sm-3 col-form-label" for="id_textbox">ID</label>
                     <div class="col-sm-9">
-                        <input id="id_textbox" class="form-control" required autofocus name="id">
+                        <input id="id_textbox" class="form-control id_textbox" required autofocus name="id">
+                        <div class="valid-feedback">O.K.</div>
+                        <div class="invalid-feedback">idは半角英数字16文字以内です。</div>
                     </div>
                 </div>
                 <div class="card-text row mb-3">
-                    <label class="col-sm-3 col-form-label " for="name_textbox">Email</label>
+                    <label class="col-sm-3 col-form-label " for="email_textbox">Email</label>
                     <div class="col-sm-9">
-                        <input id="name_textbox" class="form-control" type="email" autofocus name="email">
+                        <input id="email_textbox" class="form-control email_textbox" type="email" autofocus
+                            name="email">
+                        <div class="valid-feedback">O.K.</div>
+                        <div class="invalid-feedback">emailは半角英数字64文字以内です。</div>
                     </div>
                 </div>
                 <div class="card-text row mb-3">
                     <label class="col-sm-3 col-form-label" for="pass_textbox">Password</label>
                     <div class="col-sm-9">
-                        <input id="pass_textbox" class="form-control" type="password" required autofocus
-                            name="password">
+                        <input id="pass_textbox" class="form-control password_textbox" type="password" required
+                            autofocus name="password">
+                        <div class="valid-feedback">O.K.</div>
+                        <div class="invalid-feedback">パスワードは半角英数字32桁までです。</div>
                     </div>
                 </div>
                 <div class="card-text row mb-3">
@@ -63,50 +72,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-    // 最初は何も入力されていないのでボタンを使用不可にする
-    check_password_confirm("pass_textbox_again", "signup_button");
-    // passwordとpassword_againが一致しているかの判定
-    var elm_pass = $('#pass_textbox');
-    var elm_confirm = $('#pass_textbox_again');
-
-    // 一回目のパスワードからフォーカスが外れたら確認パスワードにフォーカスする
-    elm_pass.on('blur', function () {
-        if (elm_pass.val() != elm_confirm.val()) {
-            elm_confirm.focus();
-        }
-    });
-    //確認パスワード入力のフォーカスを失ったとき（Blur）のイベントリスナー
-    elm_confirm.on('blur', function () {
-        // ok
-        if (elm_pass.val() === "" && elm_confirm.val() === "") {
-            elm_confirm.removeClass("is-invalid");
-            elm_pass.removeClass("is-invalid");
-            elm_confirm.removeClass("is-valid");
-            elm_pass.removeClass("is-valid");
-        }
-        else if (elm_pass.val() === elm_confirm.val()) {
-            elm_confirm.removeClass("is-invalid");
-            elm_confirm.addClass("is-valid");
-        }
-        // nvalid
-        else {
-            elm_confirm.removeClass("is-valid");
-            elm_confirm.addClass("is-invalid");
-        }
-        check_password_confirm("pass_textbox_again", "signup_button");
-    });
-    // パスワードの一致が確認できるまではパスワード変更ボタンは使えなくする
-    function check_password_confirm(pass_textbox_again, password_button) {
-        if ($("#" + pass_textbox_again).val() === "") {
-            $("#" + password_button).prop("disabled", true);
-        }
-        else if ($("#" + pass_textbox_again).hasClass("is-valid")) {
-            $("#" + password_button).prop("disabled", false);
-        }
-        else {
-            $("#" + password_button).prop("disabled", true);
-        }
-    }
-</script>
+<!-- my js files -->
+<script type="text/javascript" src="{% static 'js/Login/base.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/Login/signup.js' %}"></script>
 {% endblock %}

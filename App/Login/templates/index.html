@@ -17,9 +17,10 @@
         <div class="card-body">
             <form action="{% url 'Login:index'%}" method="post" class="text-center form-signin">
                 {% csrf_token %}
-                <p class="card-text"><input class="form-control" placeholder="ID" required autofocus name="id"></p>
-                <p class="card-text"><input class="form-control" type="password" placeholder="PASSWORD" required
-                        name="password"></p>
+                <p class="card-text"><input class="form-control id_textbox" placeholder="ID" required autofocus
+                        name="id"></p>
+                <p class="card-text"><input class="form-control password_textbox" type="password" placeholder="PASSWORD"
+                        required name="password"></p>
                 <p class="card-text"><a href="{% url 'Login:change_password' %}">パスワードをお忘れの場合</a></p>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Login</button>
                 <p class="err_msg">{{msg|linebreaksbr}}</p>

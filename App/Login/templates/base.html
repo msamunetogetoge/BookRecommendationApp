@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+{% load static %}
 
 <head>
     <meta charset="utf-8" />
@@ -95,11 +96,10 @@
                 <form action="{% url 'Books:thoughts'%}" method="post" class="text-center">
                     {% csrf_token %}
                     <div class="modal-body">
-
                         <div class="card-text mb-3">
                             <label class="form-label pull-left mb-3" for="title_textbox">タイトル</label>
                             <div class="">
-                                <input id="title_textbox" class="form-control" required autofocus name="title">
+                                <input id="title_textbox" class="form-control" name="title" readonly>
                             </div>
                         </div>
                         <div class="card-text mb-3">
@@ -111,8 +111,9 @@
                         <div class="card-text mb-3">
                             <label class="pull-left form-label mb-3" for="thoughts_textbox">感想</label>
                             <div class="">
-                                <textarea id="thoughts_textbox" class="form-control" required autofocus name="thoughts"
-                                    rows="3"> </textarea>
+                                <textarea id="thoughts_textbox" class="form-control thoughts_textbox" required autofocus
+                                    name="thoughts" rows="4"> </textarea>
+                                <div class="invalid-feedback">感想は300文字までです。</div>
                             </div>
                         </div>
                         <!-- <button class="btn btn-primary btn-block" type="submit">登録</button> -->
@@ -120,7 +121,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                        <button type="submit" class="btn btn-primary">登録</button>
+                        <button type="submit" class="btn btn-primary" id="thoughts_modal_submit_button">登録</button>
                     </div>
                 </form>
             </div>
@@ -149,6 +150,7 @@
         crossorigin="anonymous"></script>
     <!-- slick -->
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
     {% block ajax %}
     <script>
         // ajax使う為の設定
