@@ -157,14 +157,46 @@
 
 
 {% endblock %}
+
 {% block modal %}
 {% endblock %}
+
 {% block ajax %}
 {% endblock %}
+
 {% block scripts %}
 <!-- my js file -->
 <script type="text/javascript" src="{% static 'js/Login/config.js' %}"></script>
 <script>
+    // ajax使う為の設定
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     // お気に入り作家を登録する
     $("#auth_add").click(
         function () {
@@ -177,7 +209,7 @@
                         code: "0",
                         string: auth,
                     },
-                    timeout: 5000
+                    timeout: 5000,
                 })
                     .done(function (data) {
                         $("#auth_list").append('<form method="post" action=' + '{% url "Login:delete_attr" %}' + '>{%csrf_token%}<li class="list-group-item d-flex justify-content-between align-items-center ">' + auth + '<a href="#" class="clear_button"><input type="hidden" value="{{a}}" name="string"><input type="hidden" value="0" name="code"><span class="material-icons">clear</span></a></li></form>');
@@ -190,7 +222,5 @@
                     });
             }
         });
-
-
 </script>
 {% endblock %}

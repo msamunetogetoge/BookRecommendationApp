@@ -84,6 +84,7 @@
 
     {% block contents %}
     {% endblock %}
+
     {% block modals %}
     <!--既読にするmodal -->
     <div class="modal" tabindex="-1" id="not_read_modal" aria-labelledby="not_read_modal_label" aria-hidden="true">
@@ -116,8 +117,6 @@
                                 <div class="invalid-feedback">感想は300文字までです。</div>
                             </div>
                         </div>
-                        <!-- <button class="btn btn-primary btn-block" type="submit">登録</button> -->
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
@@ -150,39 +149,6 @@
         crossorigin="anonymous"></script>
     <!-- slick -->
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
-    {% block ajax %}
-    <script>
-        // ajax使う為の設定
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        var csrftoken = getCookie('csrftoken');
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-        $.ajaxSetup({
-            beforeSend: function (xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
-    </script>
-    {% endblock %}
 
     {% block scripts %}
     {% endblock %}
