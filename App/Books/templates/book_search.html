@@ -5,10 +5,6 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/Books/book_search.css' %}">
 {% endblock %}
 
-{% block page_title %}
-検索ページ
-{% endblock %}
-
 {% block contents %}
 
 <div class="container content">
@@ -38,7 +34,7 @@
 
 <!-- 検索結果 -->
 <div class="container">
-    <h3>検索結果</h3>
+    <!-- <h3>検索結果</h3> -->
     <div class="row row-cols-1 row-cols-md-3 g-4" id="searchresult">
         {% for data in datas %}
         <div class="col">
