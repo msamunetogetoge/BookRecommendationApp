@@ -1,4 +1,7 @@
 .card-container.card {
-    max-width: 700px;
+    max-width: 1024px;
     padding: 40px 40px;
+}
+.email_form{
+    display: none;
 }
