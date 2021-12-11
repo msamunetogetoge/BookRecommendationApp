@@ -7,21 +7,21 @@
 
 {% block contents %}
 
-<div class="container">
+<div class="container-fluid">
     <div class="card card-container mb-6">
         <h5 class="card-header">Book Recommender</h5>
         <div class="card-body">
             <form action="{% url 'Login:signup'%}" method="post" class="text-center form-signin form-group">
                 {% csrf_token %}
                 <div class="card-text row mb-3">
-                    <label class="col-sm-3 col-form-label " for="name_textbox">Name</label>
+                    <label class="col-sm-3 col-form-label " for="name_textbox">名前</label>
                     <div class="col-sm-9">
                         <input id="name_textbox" class="form-control name_textbox" required autofocus name="name">
                         <div class="valid-feedback">O.K.</div>
-                        <div class="invalid-feedback">Nameは64文字以内です。</div>
+                        <div class="invalid-feedback">名前は64文字以内です。</div>
                     </div>
                 </div>
-                <div class="card-text row mb-3">
+                <div class="card-text row mb-3 ">
                     <label class="col-sm-3 col-form-label" for="id_textbox">ID</label>
                     <div class="col-sm-9">
                         <input id="id_textbox" class="form-control id_textbox" required autofocus name="id">
@@ -29,7 +29,7 @@
                         <div class="invalid-feedback">idは半角英数字16文字以内です。</div>
                     </div>
                 </div>
-                <div class="card-text row mb-3">
+                <div class="card-text row mb-3 email_form">
                     <label class="col-sm-3 col-form-label " for="email_textbox">Email</label>
                     <div class="col-sm-9">
                         <input id="email_textbox" class="form-control email_textbox" type="email" autofocus
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="card-text row mb-3">
-                    <label class="col-sm-3 col-form-label" for="pass_textbox">Password</label>
+                    <label class="col-sm-3 col-form-label" for="pass_textbox">パスワード</label>
                     <div class="col-sm-9">
                         <input id="pass_textbox" class="form-control password_textbox" type="password" required
                             autofocus name="password">
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="card-text row mb-3">
-                    <label class="col-sm-3 col-form-label" for="pass_textbox_again">Password Again</label>
+                    <label class="col-sm-3 col-form-label" for="pass_textbox_again">確認</label>
                     <div class="col-sm-9">
                         <input id="pass_textbox_again" class="form-control" type="password" required autofocus
                             name="password_again">
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" id="signup_button"
-                    onclick="check_password_confirm('pass_textbox_again', 'signup_button');">SignUp</button>
+                    onclick="check_password_confirm('pass_textbox_again', 'signup_button');">登録</button>
                 <div class="err_msg">
                     {{msg}}
                 </div>

@@ -7,10 +7,12 @@
 
 {% block contents %}
 <!-- 作家表示 -->
-<div class="container">
+<div class="container-fluid">
     {{msg}}
     <div class="card card-container mb-6">
-        <h5 class="card-header">お気に入りの作家</h5>
+        <h5 class="card-header"> <span class="material-icons">
+                star
+            </span>お気に入りの作家</h5>
         <div class="card-body">
             <ul class="list-group">
                 <div id="auth_list">
@@ -48,9 +50,9 @@
 </div>
 
 <!-- 読みたい本表示 -->
-<div class="container">
+<div class="container-fluid">
     <div class="card card-container mb-6">
-        <h5 class="card-header">読みたい本</h5>
+        <h5 class="card-header"> <span class="material-icons">bookmark</span>読みたい本</h5>
         <div class="card-body">
             <ul class="list-group">
                 <div id="not_read_list">
@@ -87,9 +89,9 @@
     </div>
 </div>
 <!-- 読んだ本表示 -->
-<div class="container">
+<div class="container-fluid">
     <div class="card card-container mb-6">
-        <h5 class="card-header">既読本</h5>
+        <h5 class="card-header"><span class="material-icons">auto_stories</span>既読本</h5>
         <div class="card-body">
             <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center ">
                 <div>
@@ -120,7 +122,7 @@
     </div>
 </div>
 <!-- ジャンル表示 -->
-<div class=" container" style="display: none;">
+<div class=" container-fluid" style="display: none;">
     <div class="card card-container mb-6">
         <h5 class="card-header">お気に入りのジャンル</h5>
         <div class="card-body">

@@ -5,6 +5,9 @@ a:active {
     text-decoration: none;
     color: black;
 }
+.text_big{
+    font-size: large;
+}
 
 .slick-prev,
 .slick-next {

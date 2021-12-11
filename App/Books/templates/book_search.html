@@ -7,21 +7,27 @@
 
 {% block contents %}
 
-<div class="container content">
+<div class="container-fluid content">
     <!-- 検索フォーム -->
-    <div class="card card-container mb-6" id="searchform">
+    <div class="card card-container mb-auto" id="searchform">
         <h5 class="card-header">検索</h5>
         <div class="card-body">
             <form action="{% url 'Books:book_search'%}" method="post" class="text-center form-signin">
                 {% csrf_token %}
                 <div class="form-group row">
-                    <label for="author" class="col-sm-2 col-form-label">著者</label>
+                    <label for="author" class="col-sm-2 col-form-label ">
+                        <h5>著者</h5>
+                    </label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="author" value="" name="auth">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="title" class="col-sm-2 col-form-label">タイトル</label>
+                    <label for="title" class="col-sm-2 col-form-label">
+                        <h5>
+                            タイトル
+                        </h5>
+                    </label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="title" placeholder="" name="title">
                     </div>
@@ -33,9 +39,9 @@
 </div>
 
 <!-- 検索結果 -->
-<div class="container">
+<div class="container-lg">
     <!-- <h3>検索結果</h3> -->
-    <div class="row row-cols-1 row-cols-md-3 g-4" id="searchresult">
+    <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-3 g-4" id="searchresult">
         {% for data in datas %}
         <div class="col">
             <form action="{% url 'Books:detail'%}" method="post">
@@ -49,12 +55,12 @@
 
                 <div class="card mb-3">
                     <div class="row g-0">
-                        <div class="col-lg-4">
+                        <div class="col-sm-4">
                             <button type="submit">
                                 <img src="{{data.imageLinks.thumbnail}}" alt="thumbnail">
                             </button>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-sm-8">
                             <div class="card-body">
                                 <h5 class="card-title">{{data.title}}</h5>
                                 <p class="card-text">

@@ -10,21 +10,20 @@
 {% load static %}
 
 <!-- 本のタイトルなど -->
-<div class="container">
-    <div class="card mb-3">
+<div class="container-fluid">
+    <div class="card mb-4">
         <div class="row g-0">
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <img src="{{data.imageLinks.thumbnail}}" alt="thumbnail">
             </div>
-            <div class="col-md-8">
+            <div class="col-md-5">
                 <div class="card-body">
                     <h3 class="card-title">{{data.title}}</h3>
-                    <p class="card-text">{{data.publishedDate}}出版</p>
-                    <p class="card-text">
+                    <p class="card-text text_big">{{data.publishedDate}}出版</p>
+                    <p class="card-text text_big">
                         {{data.authors}}
                         著
                     </p>
-                    <p>
                     <form method="post" action="{% url 'Books:thoughts' %}">
                         {%csrf_token%}
                         <input type="hidden" value="{{data.title}}" name="title">
@@ -35,7 +34,6 @@
                             </span>読みたい本に登録
                         </button>
                     </form>
-                    </p>
                     <p>
                         <button type="btn" class="btn btn-normal" data-bs-toggle="modal"
                             data-bs-target="#not_read_modal" style="white-space: nowrap;"
@@ -45,28 +43,26 @@
                     </p>
                 </div>
             </div>
+            <div class="col-md-5">
+                <div class="card-body">
+                    <h3 class="card-title">amazonで買う</h3>
+                    <p class="card-text">
+                        <!-- gitに載せて良いか分からないので取りあえず空白 -->
+
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- あらすじ -->
-<div class="container">
+<div class="container-fluid">
     <div class="card mb-3">
         <div class="card-body">
             <h3 class="card-title">作品紹介・あらすじ</h3>
             <p class="card-text">
                 {{data.description}}
-            </p>
-        </div>
-    </div>
-</div>
-<!-- amazonで買うカード-->
-<div class="container">
-    <div class="card mb-3">
-        <div class="card-body">
-            <h3 class="card-title">amazonで買う</h3>
-            <p class="card-text">
-                <!-- gitに載せて良いか分からないので取りあえず空白 -->
             </p>
         </div>
     </div>
