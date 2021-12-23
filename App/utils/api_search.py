@@ -35,6 +35,7 @@ def search_from_params(auth:str="", title:str="")->list[dict]:
     if url == "":
         return list({})
     res = requests.get(url).json()
+    print(url)
     result_list = get_result_list(res)
     return result_list
     
@@ -64,7 +65,7 @@ def create_query_string(title="", auth="")->str:
         q1 = "inauthor:" + auth
         q2 = "intitle:" + title
         url+= q1 + "+" + q2
-    print(url)
+    url +=  "&maxResults=40"
     return url
 
 def get_result_list(response:dict)-> list[dict]:
