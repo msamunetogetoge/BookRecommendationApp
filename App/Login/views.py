@@ -1,4 +1,4 @@
-import json
+import inspect
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
@@ -146,7 +146,7 @@ def delete_attr(request):
             attr.delete()
             data = make_user_config_data(username)
         except Exception as e:
-            print(e)
+            print(f"{inspect.currentframe().f_back.f_code.co_filename},{inspect.currentframe().f_back.f_lineno},{e}")
             data = make_user_config_data(username)
             data["msg"] = "削除に失敗"
             return render(request, "config.html", data)
