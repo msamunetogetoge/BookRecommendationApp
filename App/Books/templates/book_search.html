@@ -12,14 +12,13 @@
     <div class="card card-container mb-auto" id="searchform">
         <h5 class="card-header">検索</h5>
         <div class="card-body">
-            <form action="{% url 'Books:book_search'%}" method="post" class="text-center form-signin">
-                {% csrf_token %}
+            <form action="#" class="text-center form-signin">
                 <div class="form-group row">
                     <label for="author" class="col-sm-2 col-form-label ">
                         <h5>著者</h5>
                     </label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="author" value="" name="auth">
+                        <input type="text" class="form-control" id="author" name="auth">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -32,14 +31,16 @@
                         <input type="text" class="form-control" id="title" placeholder="" name="title">
                     </div>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">検索</button>
+                <button class="btn btn-lg btn-primary btn-block btn-signin searcbutton" id="top_searchbutton"
+                    type="button">検索</button>
+                <p class="err_msg"></p>
         </div>
         </form>
     </div>
 </div>
 
 <!-- 検索結果 -->
-<div class="container-lg">
+<div class="container-lg mb-5">
     <!-- <h3>検索結果</h3> -->
     <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-3 g-4" id="searchresult">
         {% for data in datas %}
@@ -74,13 +75,131 @@
                     </div>
                 </div>
             </form>
-
         </div>
 
         {% endfor %}
+    </div>
+    <div id="more_search_button" class="text-center">
+        <button type="button" class="btn btn-outline-normal searcbutton">
+            <span class="material-icons big-circle">
+                arrow_drop_down_circle
+            </span>
+            さらに検索
+        </button>
     </div>
 </div>
 
 {% endblock %}
 {% block scripts %}
+<script>
+    // djangoでajaxを使う為のの設定
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    // データが無い時は更に検索ボタンを隠す
+    function display_more_search() {
+        if ($("#searchresult form").length == 0) {
+            $("#more_search_button").css("display", "none");
+        }
+        else if ($(".err_msg").text() != "") {
+            $("#more_search_button").css("display", "none");
+        }
+        else {
+            $("#more_search_button").show();
+        }
+    }
+
+
+    var next_int = 0;
+    display_more_search();
+    $("#top_searchbutton").on("click", function () {
+        next_int = 0;
+        $("#searchresult").empty();
+    });
+
+    $(".searcbutton").on("click", function () {
+        // ajaxでデータ取得 と next_int　の更新
+        var auth = $("#author").val();
+        var title = $("#title").val();
+        $.ajax({
+            url: "{% url 'Books:book_search' %}",
+            method: "POST",
+            data: {
+                author: auth,
+                title: title,
+                next_int: next_int
+            },
+            timeout: 5000,
+        })
+            .done(function (result) {
+                $(".err_msg").text("")
+                var datas = result.datas;
+                next_int += 1;
+                for (var i in datas) {
+                    var data = datas[i];
+                    var authors = data.authors;
+                    $("#searchresult").append(
+                        $('<div/>', { 'class': 'col' }).append(
+                            $('<form/>', { 'action': "{% url 'Books:detail'%}", 'method': "post" }).append(
+                                '{% csrf_token %}',
+                                $('<input/>', { type: 'hidden', value: data.title, name: 'title' }),
+                                $('<input/>', { type: "hidden", value: JSON.stringify(data.imageLinks), name: "imageLinks" }),
+                                $('<input/>', { type: "hidden", value: data.description, name: "description" }),
+                                $('<input/>', { type: "hidden", value: data.authors, name: "authors" }),
+                                $('<input/>', { type: "hidden", value: data.publishedDate, name: "publishedDate" }),
+                                $('<input/>', { type: "hidden", value: data.pageCount, name: "pageCount" }),
+                                $('<div/>', { class: 'card mb-3' }).append(
+                                    $('<div/>', { class: "row g-0" }).append(
+                                        $('<div/>', { class: "col-sm-4" }).append(
+                                            $('<button/>', { type: "submit" }).append(
+                                                $('<img/>', { src: data.imageLinks.thumbnail, alt: "thumbnail" })
+                                            )
+                                        ),
+                                        $('<div/>', { class: "col-sm-8" }).append(
+                                            $('<div/>', { class: "card-body" }).append(
+                                                $('<h5/>', { class: "cart-title", text: data.title }),
+                                                $('<p/>', { class: "card-text", test: authors + "著" })
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    );
+                }
+                display_more_search();
+            })
+            .fail(function (data) {
+                $(".err_msg").text(data.responseJSON.error);
+                display_more_search();
+                $('body, html').animate({ scrollTop: 0 }, 100);
+                return false;
+            })
+    })
+</script>
 {% endblock %}
